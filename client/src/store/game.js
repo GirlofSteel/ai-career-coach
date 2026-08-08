@@ -12,6 +12,7 @@ export const useGameStore = defineStore('game', () => {
   const resumeText = ref('')
   const resumeFilename = ref('')
   const jobTitle = ref('')
+  const uploadConfirmed = ref(false)
 
   // ====== Level 1 Data ======
   const level1Data = ref(null) // { jdAnalysis, questions[], stats, searchSources }
@@ -71,6 +72,10 @@ export const useGameStore = defineStore('game', () => {
 
   function setJD(text) {
     jdText.value = text
+    uploadConfirmed.value = false
+    level1Data.value = null
+    level2Data.value = null
+    resetInterview()
     // Extract job title
     const lines = text.split('\n').filter(l => l.trim())
     if (lines.length > 0) {
@@ -81,6 +86,13 @@ export const useGameStore = defineStore('game', () => {
   function setResume(text, filename) {
     resumeText.value = text
     resumeFilename.value = filename
+    uploadConfirmed.value = false
+    level2Data.value = null
+    resetInterview()
+  }
+
+  function confirmUpload() {
+    uploadConfirmed.value = true
   }
 
   function setLevel1Data(data) {
@@ -100,6 +112,15 @@ export const useGameStore = defineStore('game', () => {
   function setInterviewSummary(data) {
     interviewSummary.value = data
     isInterviewFinished.value = true
+  }
+
+  function resetInterview() {
+    interviewId.value = ''
+    interviewRounds.value = []
+    currentQuestion.value = ''
+    currentFeedback.value = ''
+    interviewSummary.value = null
+    isInterviewFinished.value = false
   }
 
   function switchTab(tab) {
@@ -188,6 +209,7 @@ export const useGameStore = defineStore('game', () => {
     resumeText.value = entry.resumeText
     resumeFilename.value = entry.resumeFilename
     jobTitle.value = entry.title
+    uploadConfirmed.value = true
     level1Data.value = entry.level1Data
     level2Data.value = entry.level2Data
     displayMode.value = entry.displayMode || 'full'
@@ -207,14 +229,10 @@ export const useGameStore = defineStore('game', () => {
     resumeText.value = ''
     resumeFilename.value = ''
     jobTitle.value = ''
+    uploadConfirmed.value = false
     level1Data.value = null
     level2Data.value = null
-    interviewId.value = ''
-    interviewRounds.value = []
-    currentQuestion.value = ''
-    currentFeedback.value = ''
-    interviewSummary.value = null
-    isInterviewFinished.value = false
+    resetInterview()
     selectedCategory.value = 'all'
     currentPage.value = 1
     displayMode.value = 'full'
@@ -223,7 +241,7 @@ export const useGameStore = defineStore('game', () => {
   return {
     // State
     activeTab, isLoading, error,
-    jdText, resumeText, resumeFilename, jobTitle,
+    jdText, resumeText, resumeFilename, jobTitle, uploadConfirmed,
     level1Data, displayMode, selectedCategory, currentPage, pageSize,
     level2Data,
     interviewId, interviewRounds, currentQuestion, currentFeedback,
@@ -232,9 +250,9 @@ export const useGameStore = defineStore('game', () => {
     // Computed
     filteredQuestions, paginatedQuestions, totalPages, level1Progress,
     // Actions
-    setError, setJD, setResume,
+    setError, setJD, setResume, confirmUpload,
     setLevel1Data, setLevel2Data,
-    addInterviewRound, setInterviewSummary,
+    addInterviewRound, setInterviewSummary, resetInterview,
     switchTab, saveToHistory, loadFromHistory, deleteHistory, resetGame,
     isFavorite, addFavorite, removeFavorite, toggleFavorite, deleteFavorites,
   }

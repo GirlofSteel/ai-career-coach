@@ -146,15 +146,6 @@
         </div>
       </div>
 
-      <!-- Navigation -->
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4">
-        <button @click="store.activeTab = 'level1'" class="btn-outline">
-          ◀️ 返回基础知识排查
-        </button>
-        <button @click="store.activeTab = 'level3'" class="btn-primary text-base sm:text-lg px-7 sm:px-10">
-          🎮 进入第三关：模拟面试
-        </button>
-      </div>
     </template>
   </div>
 </template>

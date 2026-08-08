@@ -197,6 +197,7 @@ async function startGame() {
   try {
     await uploadJD(jdInput.value)
     store.setJD(jdInput.value)
+    store.confirmUpload()
     store.activeTab = 'level1'
   } catch (err) {
     store.setError('启动失败: ' + (err.response?.data?.error || err.message))

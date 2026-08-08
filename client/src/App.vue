@@ -16,10 +16,10 @@
       </div>
 
       <!-- Nav Tabs -->
-      <nav class="flex-1 px-3 py-3 lg:py-4 lg:space-y-1 overflow-x-auto lg:overflow-y-auto">
+      <nav class="flex-1 px-3 py-3 lg:py-4 lg:space-y-1 overflow-hidden lg:overflow-y-auto">
         <div class="text-xs text-gray-400 uppercase tracking-wider px-2 mb-2 hidden lg:block">功能导航</div>
 
-        <div class="flex lg:block gap-2 min-w-max lg:min-w-0">
+        <div class="flex lg:block gap-2 min-w-max lg:min-w-0 overflow-x-auto lg:overflow-x-visible">
           <button
             v-for="tab in tabs"
             :key="tab.id"
@@ -50,9 +50,21 @@
         <div class="border-t border-gray-100 my-3 hidden lg:block"></div>
 
         <!-- Current Status -->
-        <div class="px-2 py-2 hidden sm:block">
-          <div class="text-xs text-gray-400 uppercase tracking-wider mb-2 hidden lg:block">当前状态</div>
-          <div class="flex lg:block gap-4 lg:space-y-1.5">
+        <div class="px-2 py-2 flex items-center gap-4 lg:block">
+          <div class="text-xs text-gray-400 uppercase tracking-wider flex items-center gap-1.5 lg:mb-2">
+            <span>当前状态</span>
+            <span
+              class="inline-flex"
+              @mouseenter="showStatusTooltip"
+              @mouseleave="hideStatusTooltip"
+              ref="statusHelpRef"
+            >
+              <span class="w-4 h-4 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center text-[10px] leading-none cursor-help">
+                i
+              </span>
+            </span>
+          </div>
+          <div class="flex flex-wrap lg:block gap-x-4 gap-y-1 lg:space-y-1.5">
             <div class="flex items-center gap-2 text-xs">
               <span :class="store.jdText ? 'text-[#111827]' : 'text-gray-300'">●</span>
               <span :class="store.jdText ? 'text-gray-600' : 'text-gray-400'">岗位 JD</span>
@@ -60,10 +72,6 @@
             <div class="flex items-center gap-2 text-xs">
               <span :class="store.resumeText ? 'text-[#111827]' : 'text-gray-300'">●</span>
               <span :class="store.resumeText ? 'text-gray-600' : 'text-gray-400'">个人简历</span>
-            </div>
-            <div class="flex items-center gap-2 text-xs">
-              <span :class="store.level1Data ? 'text-[#111827]' : 'text-gray-300'">●</span>
-              <span :class="store.level1Data ? 'text-gray-600' : 'text-gray-400'">面经数据</span>
             </div>
           </div>
         </div>
@@ -108,11 +116,19 @@
         <QuestionFavorites v-if="store.activeTab === 'favorites'" />
       </div>
     </main>
+
+    <div
+      v-if="statusTooltipVisible"
+      class="pointer-events-none fixed z-[9999] w-72 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-normal leading-relaxed tracking-normal text-slate-600 shadow-sm"
+      :style="statusTooltipStyle"
+    >
+      完成岗位 JD 上传并确认后，可解锁「基础知识排查」模块；继续上传个人简历并确认后，可解锁「个性化问题」和「模拟面试」模块。
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useGameStore } from './store/game.js'
 import UploadPanel from './components/UploadPanel.vue'
 import Level1Basic from './components/Level1Basic.vue'
@@ -128,6 +144,9 @@ import favoritesIcon from './assets/icons/favorites.svg'
 import restartIcon from './assets/icons/restart.svg'
 
 const store = useGameStore()
+const statusHelpRef = ref(null)
+const statusTooltipVisible = ref(false)
+const statusTooltipStyle = ref({})
 
 const tabs = computed(() => [
   {
@@ -142,24 +161,24 @@ const tabs = computed(() => [
     id: 'level1',
     label: '基础知识排查',
     icon: basicIcon,
-    hint: '需上传岗位JD',
-    enabled: !!store.jdText,
+    hint: '需确认岗位JD',
+    enabled: store.uploadConfirmed && !!store.jdText,
     badge: !!store.level1Data,
   },
   {
     id: 'level2',
     label: '个性化问题',
     icon: personalIcon,
-    hint: '需上传JD + 简历',
-    enabled: !!(store.jdText && store.resumeText),
+    hint: '需确认JD + 简历',
+    enabled: store.uploadConfirmed && !!(store.jdText && store.resumeText),
     badge: !!store.level2Data,
   },
   {
     id: 'level3',
     label: '模拟面试',
     icon: interviewIcon,
-    hint: '需上传JD + 简历',
-    enabled: !!(store.jdText && store.resumeText),
+    hint: '需确认JD + 简历',
+    enabled: store.uploadConfirmed && !!(store.jdText && store.resumeText),
     badge: store.isInterviewFinished,
   },
   {
@@ -203,5 +222,26 @@ function switchTab(tabId) {
   if (tab?.enabled) {
     store.activeTab = tabId
   }
+}
+
+function showStatusTooltip() {
+  const el = statusHelpRef.value
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  const tooltipWidth = 288
+  const viewportPadding = 12
+  const left = Math.min(
+    window.innerWidth - tooltipWidth - viewportPadding,
+    Math.max(viewportPadding, rect.left + rect.width / 2 - tooltipWidth / 2)
+  )
+  statusTooltipStyle.value = {
+    left: `${left}px`,
+    top: `${rect.bottom + 8}px`,
+  }
+  statusTooltipVisible.value = true
+}
+
+function hideStatusTooltip() {
+  statusTooltipVisible.value = false
 }
 </script>

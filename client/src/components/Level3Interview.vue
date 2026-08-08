@@ -27,8 +27,17 @@
     <template v-if="store.interviewId && !store.isInterviewFinished">
       <!-- Interview Progress -->
       <div class="game-card">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-sm text-gray-500">面试进度</span>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+          <div class="flex items-center gap-3">
+            <button
+              @click="restartInterview"
+              :disabled="starting || submitting || summarizing"
+              class="btn-outline text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              重新面试
+            </button>
+            <span class="text-sm text-gray-500">面试进度</span>
+          </div>
           <span class="text-sm font-bold text-gray-700">第 {{ store.interviewRounds.length }} 轮</span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2">
@@ -198,10 +207,6 @@
         </div>
       </div>
 
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-        <button @click="store.activeTab = 'level2'" class="btn-outline w-full sm:w-auto">◀️ 返回个性化问题</button>
-        <button @click="restartAll" class="btn-primary w-full sm:w-auto">🔄 重新开始</button>
-      </div>
     </template>
   </div>
 </template>
@@ -249,6 +254,13 @@ function toggleRoundFavorite(round, index) {
     answer: round.userAnswer,
     category: categoryLabel(round.category),
   })
+}
+
+function restartInterview() {
+  store.resetInterview()
+  userAnswer.value = ''
+  currentFeedback.value = ''
+  currentHint.value = ''
 }
 
 async function doStartInterview() {
@@ -330,7 +342,4 @@ async function getSummary() {
   }
 }
 
-function restartAll() {
-  store.resetGame()
-}
 </script>

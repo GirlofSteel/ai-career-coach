@@ -181,12 +181,6 @@
         </div>
       </details>
 
-      <!-- Next Level Button -->
-      <div class="text-center pt-4">
-        <button @click="goToLevel2" class="btn-primary text-lg px-10">
-          ▶️ 进入第二关：个性化分析
-        </button>
-      </div>
     </template>
   </div>
 </template>
@@ -278,7 +272,4 @@ async function searchQuestions() {
   }
 }
 
-function goToLevel2() {
-  store.activeTab = 'level2'
-}
 </script>
