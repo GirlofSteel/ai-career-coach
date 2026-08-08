@@ -8,14 +8,14 @@
             已收藏 {{ store.favoriteQuestions.length }} 道题
           </p>
         </div>
-        <div v-if="store.favoriteQuestions.length" class="flex items-center gap-2">
-          <button @click="toggleSelectAll" class="btn-outline text-sm">
+        <div v-if="store.favoriteQuestions.length" class="flex w-full sm:w-auto items-center gap-2">
+          <button @click="toggleSelectAll" class="btn-outline text-sm flex-1 sm:flex-none">
             {{ isAllSelected ? '取消全选' : '全选' }}
           </button>
           <button
             @click="deleteSelected"
             :disabled="selectedIds.length === 0"
-            class="px-4 py-2 rounded-lg text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            class="px-4 py-2 rounded-lg text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex-1 sm:flex-none"
           >
             删除选中
           </button>
@@ -55,7 +55,7 @@
           </div>
           <button
             @click="store.deleteFavorites([item.id])"
-            class="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-slate-500 hover:bg-slate-50 transition-colors flex-shrink-0"
+            class="text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-slate-500 hover:bg-slate-50 transition-colors flex-shrink-0 self-start"
           >
             删除
           </button>

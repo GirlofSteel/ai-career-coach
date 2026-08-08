@@ -12,7 +12,7 @@
         <p>• 共约 8-10 轮对话，覆盖项目、基础、设计</p>
         <p>• 面试结束后生成详细报告</p>
       </div>
-      <button @click="doStartInterview" :disabled="starting" class="btn-primary text-lg px-10">
+      <button @click="doStartInterview" :disabled="starting" class="btn-primary text-base sm:text-lg px-7 sm:px-10">
         {{ starting ? '面试官准备中...' : '🎤 开始面试' }}
       </button>
     </div>
@@ -38,15 +38,15 @@
       </div>
 
       <!-- Conversation History -->
-      <div class="space-y-4 max-h-[50vh] overflow-y-auto pr-2" ref="chatContainer">
+      <div class="space-y-4 max-h-[60vh] sm:max-h-[50vh] overflow-y-auto pr-1 sm:pr-2" ref="chatContainer">
         <div v-for="(round, i) in store.interviewRounds" :key="i">
           <!-- AI Question -->
-          <div class="flex items-start gap-3 mb-3">
-            <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-lg flex-shrink-0">
+          <div class="flex items-start gap-2 sm:gap-3 mb-3">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 bg-slate-100 rounded-xl flex items-center justify-center text-base sm:text-lg flex-shrink-0">
               🤖
             </div>
-            <div class="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[80%] shadow-sm">
-              <div class="flex items-center justify-between gap-3 mb-1">
+            <div class="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-3 sm:px-4 py-3 max-w-[calc(100%-44px)] sm:max-w-[80%] shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 mb-1">
                 <div class="text-xs text-gray-400">
                   AI 面试官 · {{ categoryLabel(round.category) }}
                 </div>
@@ -67,19 +67,19 @@
           </div>
 
           <!-- User Answer + Feedback -->
-          <div v-if="round.userAnswer" class="ml-13 space-y-2">
-            <div class="flex items-start gap-3 justify-end">
-              <div class="bg-primary-50 border border-primary-200 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+          <div v-if="round.userAnswer" class="space-y-2 sm:ml-13">
+            <div class="flex items-start gap-2 sm:gap-3 justify-end">
+              <div class="bg-primary-50 border border-primary-200 rounded-2xl rounded-tr-sm px-3 sm:px-4 py-3 max-w-[calc(100%-44px)] sm:max-w-[80%]">
                 <div class="text-xs text-primary-400 mb-1">你的回答</div>
                 <p class="text-gray-700">{{ round.userAnswer }}</p>
               </div>
-              <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-lg flex-shrink-0">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 bg-slate-100 rounded-xl flex items-center justify-center text-base sm:text-lg flex-shrink-0">
                 👤
               </div>
             </div>
 
             <!-- AI Feedback -->
-            <div v-if="round.feedback && i < store.interviewRounds.length - 1" class="ml-13">
+            <div v-if="round.feedback && i < store.interviewRounds.length - 1" class="sm:ml-13">
               <div class="bg-slate-50 border border-gray-200 rounded-xl px-3 py-2 text-sm">
                 <span class="text-slate-600 font-medium">📝 评价：</span>
                 <span class="text-gray-600">{{ round.feedback }}</span>
@@ -108,7 +108,7 @@
             class="flex-1 border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary-600 focus:border-transparent outline-none resize-none"
           ></textarea>
         </div>
-        <div class="flex items-center justify-between mt-3">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-3">
           <span class="text-xs text-gray-400">Ctrl + Enter 发送</span>
           <div class="flex gap-2">
             <button @click="doSubmitAnswer"
@@ -145,7 +145,7 @@
         <p class="text-gray-600 text-center mb-6">{{ store.interviewSummary.summary }}</p>
 
         <!-- Strengths & Weaknesses -->
-        <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <div class="bg-slate-50 rounded-xl p-4 border border-gray-200">
             <h4 class="font-bold text-primary-700 mb-2">✅ 优势</h4>
             <ul class="space-y-1">
@@ -166,13 +166,13 @@
         <div class="space-y-3 mb-6">
           <h4 class="font-bold text-gray-800">各维度评分</h4>
           <div v-for="(dim, key) in store.interviewSummary.dimensions" :key="key"
-            class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-            <span class="text-sm font-medium text-gray-700 w-24">{{ dimLabel(key) }}</span>
+            class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-3 bg-gray-50 rounded-xl">
+            <span class="text-sm font-medium text-gray-700 sm:w-24">{{ dimLabel(key) }}</span>
             <div class="flex-1 bg-gray-200 rounded-full h-2">
               <div class="h-2 rounded-full bg-primary-600" :style="{ width: dim.score + '%' }"></div>
             </div>
             <span class="text-sm font-bold text-gray-800 w-8">{{ dim.score }}</span>
-            <span class="text-xs text-gray-400 flex-1">{{ dim.comment }}</span>
+            <span class="text-xs text-gray-400 sm:flex-1">{{ dim.comment }}</span>
           </div>
         </div>
 
@@ -198,9 +198,9 @@
         </div>
       </div>
 
-      <div class="text-center space-x-3">
-        <button @click="store.activeTab = 'level2'" class="btn-outline">◀️ 返回个性化问题</button>
-        <button @click="restartAll" class="btn-primary">🔄 重新开始</button>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button @click="store.activeTab = 'level2'" class="btn-outline w-full sm:w-auto">◀️ 返回个性化问题</button>
+        <button @click="restartAll" class="btn-primary w-full sm:w-auto">🔄 重新开始</button>
       </div>
     </template>
   </div>

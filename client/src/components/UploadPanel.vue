@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-3xl mx-auto space-y-8 py-8">
+  <div class="max-w-3xl mx-auto space-y-6 sm:space-y-8 py-4 sm:py-8">
     <!-- Welcome -->
     <!-- <div class="text-center space-y-3">
       <div class="text-6xl">🎯</div>
@@ -26,7 +26,7 @@
 
     <!-- Step 1: Upload JD -->
     <div class="game-card">
-      <div class="flex items-center gap-3 mb-4">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
         <span class="w-8 h-8 bg-slate-100 text-primary-700 rounded-lg flex items-center justify-center font-bold text-sm">
           1
         </span>
@@ -48,7 +48,7 @@
 
     <!-- Step 2: Upload Resume -->
     <div class="game-card">
-      <div class="flex items-center gap-3 mb-4">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
         <span class="w-8 h-8 bg-slate-100 text-primary-700 rounded-lg flex items-center justify-center font-bold text-sm">
           2
         </span>
@@ -65,7 +65,7 @@
         @dragover.prevent="isDragging = true"
         @dragleave.prevent="isDragging = false"
         @drop.prevent="handleDrop"
-        class="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all"
+        class="border-2 border-dashed rounded-xl p-5 sm:p-8 text-center cursor-pointer transition-all"
         :class="isDragging ? 'border-gray-200 bg-primary-50' : 'border-gray-300 hover:border-primary-300 hover:bg-gray-50'"
       >
         <input ref="fileInput" type="file" accept=".pdf,.doc,.docx" @change="handleFile" class="hidden" />
@@ -95,7 +95,7 @@
       <button
         @click="startGame"
         :disabled="!canStart"
-        class="btn-primary text-lg px-12 py-4"
+        class="btn-primary w-full sm:w-auto text-base sm:text-lg px-7 sm:px-12 py-4"
       >
         确认
       </button>

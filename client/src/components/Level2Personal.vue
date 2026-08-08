@@ -10,7 +10,7 @@
       <p class="text-sm text-gray-400 mb-6">
         {{ store.resumeText ? '✅ 已上传简历: ' + store.resumeFilename : '⚠️ 尚未上传简历，分析将仅基于 JD' }}
       </p>
-      <button @click="startAnalysis" :disabled="analyzing" class="btn-primary text-lg px-10">
+      <button @click="startAnalysis" :disabled="analyzing" class="btn-primary text-base sm:text-lg px-7 sm:px-10">
         {{ analyzing ? '分析中...' : '🔬 开始分析' }}
       </button>
       <button @click="store.activeTab = 'upload'" class="block mx-auto mt-3 text-sm text-gray-400 hover:text-primary-700">
@@ -34,7 +34,7 @@
         <h3 class="text-lg font-bold text-gray-900 mb-4">📊 匹配度评估</h3>
 
         <!-- Overall Score -->
-        <div class="flex items-center gap-6 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
           <div class="relative w-28 h-28 flex-shrink-0">
             <svg class="w-full h-full transform -rotate-90">
               <circle cx="56" cy="56" r="48" fill="none" stroke="#e5e7eb" stroke-width="10"/>
@@ -56,7 +56,7 @@
         </div>
 
         <!-- Dimension Scores -->
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div v-for="(dim, key) in store.level2Data.dimensions" :key="key"
             class="bg-gray-50 rounded-xl p-3">
             <div class="flex justify-between items-center mb-1">
@@ -94,7 +94,7 @@
         <div class="space-y-3">
           <div v-for="(sug, i) in store.level2Data.suggestions" :key="i"
             class="border border-gray-100 rounded-xl p-4 hover:border-primary-200 transition-colors">
-            <div class="flex items-center gap-2 mb-2">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
               <span class="badge bg-primary-50 text-primary-700">{{ sug.area }}</span>
               <span class="text-xs text-gray-400">{{ sug.currentProblem }}</span>
             </div>
@@ -112,8 +112,8 @@
         <div class="space-y-4">
           <div v-for="q in store.level2Data.questions" :key="q.id"
             class="border-l-4 border-gray-200 pl-4 py-2">
-            <div class="flex items-start justify-between gap-3 mb-1">
-              <div class="flex items-center gap-2 min-w-0">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-1">
+              <div class="flex flex-wrap items-center gap-2 min-w-0">
                 <span class="badge flex-shrink-0" :class="categoryBadge(q.category)">{{ categoryLabel(q.category) }}</span>
                 <span class="text-xs text-gray-400 truncate">关联: {{ q.context }}</span>
               </div>
@@ -147,11 +147,11 @@
       </div>
 
       <!-- Navigation -->
-      <div class="flex items-center justify-between pt-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4">
         <button @click="store.activeTab = 'level1'" class="btn-outline">
           ◀️ 返回基础知识排查
         </button>
-        <button @click="store.activeTab = 'level3'" class="btn-primary text-lg px-10">
+        <button @click="store.activeTab = 'level3'" class="btn-primary text-base sm:text-lg px-7 sm:px-10">
           🎮 进入第三关：模拟面试
         </button>
       </div>

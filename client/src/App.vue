@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen bg-white flex">
+  <div class="min-h-screen bg-white flex flex-col lg:flex-row">
     <!-- ========== Sidebar ========== -->
-    <aside class="w-60 bg-white border-r border-gray-200 flex flex-col h-screen sticky top-0 z-40 flex-shrink-0">
+    <aside class="w-full lg:w-60 bg-white border-b lg:border-b-0 lg:border-r border-gray-200 flex flex-col lg:h-screen sticky top-0 z-40 flex-shrink-0">
       <!-- Logo -->
-      <div class="px-5 py-5 border-b border-gray-100">
+      <div class="px-4 sm:px-5 py-3 sm:py-5 border-b border-gray-100">
         <div class="flex items-center gap-2.5">
           <span class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
             <img :src="coachIcon" alt="" class="w-6 h-6" />
@@ -16,41 +16,43 @@
       </div>
 
       <!-- Nav Tabs -->
-      <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        <div class="text-xs text-gray-400 uppercase tracking-wider px-2 mb-2">功能导航</div>
+      <nav class="flex-1 px-3 py-3 lg:py-4 lg:space-y-1 overflow-x-auto lg:overflow-y-auto">
+        <div class="text-xs text-gray-400 uppercase tracking-wider px-2 mb-2 hidden lg:block">功能导航</div>
 
-        <button
-          v-for="tab in tabs"
-          :key="tab.id"
-          @click="switchTab(tab.id)"
-          :disabled="!tab.enabled"
-          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-sm font-medium transition-colors duration-200 text-left"
-          :class="tabClass(tab)"
-        >
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-            :class="store.activeTab === tab.id ? 'bg-white/10' : 'bg-slate-100'">
-            <img
-              :src="tab.icon"
-              alt=""
-              class="w-5 h-5 transition-[filter] duration-200"
-              :class="store.activeTab === tab.id ? 'brightness-0 invert' : ''"
-            />
-          </span>
-          <div class="min-w-0">
-            <div class="truncate">{{ tab.label }}</div>
-            <div v-if="!tab.enabled" class="text-xs text-gray-300 truncate">{{ tab.hint }}</div>
-          </div>
-          <span v-if="tab.enabled && tab.badge" class="ml-auto w-1.5 h-1.5 rounded-full bg-[#111827] flex-shrink-0"></span>
-          <span v-if="!tab.enabled" class="ml-auto text-gray-300 flex-shrink-0">🔒</span>
-        </button>
+        <div class="flex lg:block gap-2 min-w-max lg:min-w-0">
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            @click="switchTab(tab.id)"
+            :disabled="!tab.enabled"
+            class="w-auto lg:w-full flex items-center gap-2 lg:gap-3 px-3 py-2.5 rounded-[10px] text-sm font-medium transition-colors duration-200 text-left flex-shrink-0"
+            :class="tabClass(tab)"
+          >
+            <span class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+              :class="store.activeTab === tab.id ? 'bg-white/10' : 'bg-slate-100'">
+              <img
+                :src="tab.icon"
+                alt=""
+                class="w-5 h-5 transition-[filter] duration-200"
+                :class="store.activeTab === tab.id ? 'brightness-0 invert' : ''"
+              />
+            </span>
+            <div class="min-w-0">
+              <div class="truncate">{{ tab.label }}</div>
+              <div v-if="!tab.enabled" class="text-xs text-gray-300 truncate hidden sm:block">{{ tab.hint }}</div>
+            </div>
+            <span v-if="tab.enabled && tab.badge" class="ml-auto w-1.5 h-1.5 rounded-full bg-[#111827] flex-shrink-0"></span>
+            <span v-if="!tab.enabled" class="ml-auto text-gray-300 flex-shrink-0 hidden lg:inline">🔒</span>
+          </button>
+        </div>
 
         <!-- Divider -->
-        <div class="border-t border-gray-100 my-3"></div>
+        <div class="border-t border-gray-100 my-3 hidden lg:block"></div>
 
         <!-- Current Status -->
-        <div class="px-2 py-2">
-          <div class="text-xs text-gray-400 uppercase tracking-wider mb-2">当前状态</div>
-          <div class="space-y-1.5">
+        <div class="px-2 py-2 hidden sm:block">
+          <div class="text-xs text-gray-400 uppercase tracking-wider mb-2 hidden lg:block">当前状态</div>
+          <div class="flex lg:block gap-4 lg:space-y-1.5">
             <div class="flex items-center gap-2 text-xs">
               <span :class="store.jdText ? 'text-[#111827]' : 'text-gray-300'">●</span>
               <span :class="store.jdText ? 'text-gray-600' : 'text-gray-400'">岗位 JD</span>
@@ -68,7 +70,7 @@
       </nav>
 
       <!-- Footer -->
-      <div class="px-5 py-3 border-t border-gray-100">
+      <div class="px-4 sm:px-5 py-3 border-t border-gray-100">
         <button
           @click="store.resetGame()"
           class="w-full text-xs text-slate-500 hover:text-[#111827] transition-colors py-1.5 flex items-center justify-center gap-2"
@@ -76,29 +78,29 @@
           <img :src="restartIcon" alt="" class="w-4 h-4" />
           <span>重新开始</span>
         </button>
-        <p class="text-xs text-gray-300 text-center mt-1">Powered by DeepSeek + Tavily</p>
+        <p class="text-xs text-gray-300 text-center mt-1 hidden lg:block">Powered by DeepSeek + Tavily</p>
       </div>
     </aside>
 
     <!-- ========== Main Content ========== -->
     <main class="flex-1 min-w-0">
       <!-- Top Bar -->
-      <header class="bg-white border-b border-gray-200 h-16 flex items-center px-8 sticky top-0 z-30">
-        <h2 class="text-xl font-bold text-[#080D1C]">{{ currentTabLabel }}</h2>
-        <span class="text-sm text-slate-500 ml-3">{{ currentTabDesc }}</span>
+      <header class="bg-white border-b border-gray-200 min-h-16 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 px-4 sm:px-8 py-4 lg:sticky lg:top-0 z-30">
+        <h2 class="text-lg sm:text-xl font-bold text-[#080D1C]">{{ currentTabLabel }}</h2>
+        <span class="text-xs sm:text-sm text-slate-500 sm:ml-0">{{ currentTabDesc }}</span>
       </header>
 
       <!-- Error Toast -->
       <div
         v-if="store.error"
-        class="fixed top-4 right-4 z-50 bg-white border border-gray-200 text-[#080D1C] px-4 py-3 rounded-2xl shadow-sm max-w-sm"
+        class="fixed top-4 left-4 right-4 sm:left-auto z-50 bg-white border border-gray-200 text-[#080D1C] px-4 py-3 rounded-2xl shadow-sm sm:max-w-sm"
       >
         {{ store.error }}
         <button @click="store.error = null" class="ml-3 font-bold">✕</button>
       </div>
 
       <!-- Content Area -->
-      <div class="p-8">
+      <div class="p-4 sm:p-6 lg:p-8">
         <UploadPanel v-if="store.activeTab === 'upload'" />
         <Level1Basic v-if="store.activeTab === 'level1'" />
         <Level2Personal v-if="store.activeTab === 'level2'" />

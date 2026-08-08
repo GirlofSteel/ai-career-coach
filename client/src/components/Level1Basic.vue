@@ -41,7 +41,7 @@
       </div>
 
       <!-- Stats Bar -->
-      <div class="grid grid-cols-4 gap-3">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div class="bg-white rounded-xl p-4 border border-gray-100 text-center">
           <div class="text-2xl font-bold text-primary-700">{{ store.level1Data.stats?.projectCount || 0 }}</div>
           <div class="text-xs text-gray-500 mt-1">项目类</div>
@@ -62,7 +62,7 @@
 
       <!-- Controls: Category Filter + Display Mode -->
       <div class="flex flex-wrap items-center gap-3 justify-between">
-        <div class="flex gap-2">
+        <div class="flex flex-wrap gap-2">
           <button v-for="cat in categories" :key="cat.value"
             @click="store.selectedCategory = cat.value; store.currentPage = 1"
             class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
@@ -72,7 +72,7 @@
             {{ cat.label }}
           </button>
         </div>
-        <div class="flex items-center gap-2 bg-white rounded-lg border border-gray-200 p-1">
+        <div class="flex items-center gap-2 bg-white rounded-lg border border-gray-200 p-1 overflow-x-auto">
           <span class="text-xs text-gray-400 ml-2">答案显示：</span>
           <button v-for="mode in displayModes" :key="mode.value"
             @click="store.displayMode = mode.value"
@@ -90,7 +90,7 @@
         <div v-for="q in store.paginatedQuestions" :key="q.id"
           class="game-card hover:border-gray-300 transition-colors">
           <!-- Question Header -->
-          <div class="flex items-start gap-3">
+          <div class="flex flex-col sm:flex-row sm:items-start gap-3">
             <span :class="categoryBadgeClass(q.category)" class="badge text-xs">
               {{ categoryLabel(q.category) }}
             </span>
@@ -103,7 +103,7 @@
             </div>
             <button
               @click="toggleQuestionFavorite(q)"
-              class="text-xs px-3 py-1.5 rounded-lg border transition-colors flex-shrink-0"
+              class="text-xs px-3 py-1.5 rounded-lg border transition-colors flex-shrink-0 self-start"
               :class="store.isFavorite('level1', favoriteQuestionId(q))
                 ? 'bg-slate-50 border-gray-200 text-slate-700 hover:bg-slate-100'
                 : 'bg-white border-gray-200 text-gray-500 hover:border-gray-200 hover:text-slate-600'"
@@ -149,7 +149,7 @@
       </div>
 
       <!-- Pagination -->
-      <div v-if="store.totalPages > 1" class="flex items-center justify-center gap-2">
+      <div v-if="store.totalPages > 1" class="flex flex-wrap items-center justify-center gap-2">
         <button @click="store.currentPage = Math.max(1, store.currentPage - 1)"
           :disabled="store.currentPage === 1"
           class="btn-outline text-sm disabled:opacity-30">上一页</button>

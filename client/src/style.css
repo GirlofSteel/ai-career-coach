@@ -42,7 +42,7 @@
 
 @layer components {
   .game-card {
-    @apply bg-white rounded-2xl border border-gray-200 p-8 shadow-none;
+    @apply bg-white rounded-2xl border border-gray-200 p-5 sm:p-8 shadow-none;
   }
 
   .btn-primary {
